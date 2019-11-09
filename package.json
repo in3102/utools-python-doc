@@ -1,0 +1,13 @@
+{
+  "name": "utools-python-doc",
+  "version": "1.0.0",
+  "description": "Python 文档",
+  "scripts": {
+    "3.8": "node generate.js python-3.8.0-docs-html",
+    "3.7": "node generate.js python-3.7.5-docs-html",
+    "3.6": "node generate.js python-3.6.9-docs-html",
+    "2.7": "node generate.js python-2.7.17-docs-html"
+  },
+  "author": "beta",
+  "license": "MIT"
+}

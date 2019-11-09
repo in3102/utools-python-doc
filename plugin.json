@@ -1,0 +1,16 @@
+{
+    "version": "1.0.0",
+    "pluginName": "Python <version> 文档",
+    "description": "Python <version> 文档速查",
+    "author": "uTools官方",
+    "homepage": "https://u.tools",
+    "preload": "preload.js",
+    "logo": "logo.png",
+    "features": [
+        {
+            "code": "python",
+            "explain": "Python <version> 文档速查",
+            "cmds": ["Python <version>"]
+         }
+    ]
+}
