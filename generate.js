@@ -59,16 +59,16 @@ function getPythonLibraryIndexes (pythoneVersionDir, indexes) {
     if (!f.endsWith('.html')) return
     let isUse = false
     const htmlContent = fs.readFileSync(path.join(libraryDir, f), { encoding: 'utf-8' })
-    if (/<h1>(?:\d{1,2}\.\d{1,2}\. )?<a[^>\n]+?><code[^>\n]+?><span class="pre">(.+?)<\/span><\/code><\/a>\s*?(?:---|—)(.+?)<a class="headerlink".+?<\/h1>/.test(htmlContent)) {
+    if (/<h1>(?:\d{1,2}\.\d{1,2}\. )?(?:<a[^>\n]+?>)?(?:<code[^>\n]+?><span class="pre">)?([^<]+)(?:<\/span><\/code>)?(?:<\/a>)?\s*?(?:(?:---|—)(.+?))?<a class="headerlink".+?<\/h1>/.test(htmlContent)) {
       const t = removeHtmlTag(RegExp.$1.trim())
       const d = removeHtmlTag(RegExp.$2.trim())
       indexes.push({ t, p: 'library/' + f, d })
       isUse = true
     }
-    const dlMatchs = htmlContent.match(/<dl class="(?:class|function|method|data|attribute)">\s*?<dt id="[^"\n]+?">[\s\S]+?<dd><p>[\s\S]+?<\/p>/g)
+    const dlMatchs = htmlContent.match(/<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt id="[^"\n]+?">[\s\S]+?<dd><p>[\s\S]+?<\/p>/g)
     if (dlMatchs) {
       dlMatchs.forEach(dl => {
-        const maches = dl.match(/<dl class="(?:class|function|method|data|attribute)">\s*?<dt id="([^"\n]+?)">([\s\S]+?)<dd><p>([\s\S]+?)<\/p>/)
+        const maches = dl.match(/<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt id="([^"\n]+?)">([\s\S]+?)<dd><p>([\s\S]+?)<\/p>/)
         const id = maches[1].trim()
         const checkNextContent = maches[2]
         const d = removeHtmlTag(maches[3]).replace(/\s+/g, ' ').trim()
