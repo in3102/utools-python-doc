@@ -65,16 +65,16 @@ function getPythonLibraryIndexes (pythoneVersionDir, indexes) {
       indexes.push({ t, p: 'library/' + f, d })
       isUse = true
     }
-    const dlMatchs = htmlContent.match(/<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt id="[^"\n]+?">[\s\S]+?<dd><p>[\s\S]+?<\/p>/g)
+    const dlMatchs = htmlContent.match(/<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt(?: class="[^"]*")? id="[^"\n]+?">[\s\S]+?<dd><p>[\s\S]+?<\/p>/g)
     if (dlMatchs) {
       dlMatchs.forEach(dl => {
-        const maches = dl.match(/<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt id="([^"\n]+?)">([\s\S]+?)<dd><p>([\s\S]+?)<\/p>/)
-        const id = maches[1].trim()
-        const checkNextContent = maches[2]
-        const d = removeHtmlTag(maches[3]).replace(/\s+/g, ' ').trim()
-        if (checkNextContent.includes('<dt id="')) {
-          checkNextContent.match(/<dt id="[^"\n]+?">/g).forEach(nx => {
-            const nid = nx.match(/<dt id="([^"\n]+?)">/)[1]
+        const matches = dl.match(/<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt(?: class="[^"]*")? id="([^"\n]+?)">([\s\S]+?)<dd><p>([\s\S]+?)<\/p>/)
+        const id = matches[1].trim()
+        const checkNextContent = matches[2]
+        const d = removeHtmlTag(matches[3]).replace(/\s+/g, ' ').trim()
+        if (checkNextContent.includes('<dt')) {
+          checkNextContent.match(/<dt(?: class="[^"]*")? id="[^"\n]+?">/g).forEach(nx => {
+            const nid = nx.match(/<dt(?: class="[^"]*")? id="([^"\n]+?)">/)[1]
             indexes.push({ t: nid, p: 'library/' + f + '#' + nid, d })
           })
         }
@@ -83,10 +83,10 @@ function getPythonLibraryIndexes (pythoneVersionDir, indexes) {
       isUse = true
     }
     // 存在可能重复的ID  python文档的方式是用 target 处理
-    const targetMatchs = htmlContent.match(/<span class="target" id="[^"\n]+?"><\/span>\s*?<dl class="(?:class|function|method|data|attribute)">\s*?<dt>[\s\S]+?<dd><p>[\s\S]+?<\/p>/g)
+    const targetMatchs = htmlContent.match(/<span class="target" id="[^"\n]+?"><\/span>\s*?<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt>[\s\S]+?<dd><p>[\s\S]+?<\/p>/g)
     if (targetMatchs) {
       targetMatchs.forEach(tt => {
-        const maches = tt.match(/<span class="target" id="([^"\n]+?)"><\/span>\s*?<dl class="(?:class|function|method|data|attribute)">\s*?<dt>[\s\S]+?<dd><p>([\s\S]+?)<\/p>/)
+        const maches = tt.match(/<span class="target" id="([^"\n]+?)"><\/span>\s*?<dl class="[^"]*(?:class|function|method|data|attribute)">\s*?<dt>[\s\S]+?<dd><p>([\s\S]+?)<\/p>/)
         let id = maches[1].trim()
         let kid = id
         if (id.includes('-')) {
